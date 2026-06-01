@@ -1,0 +1,11 @@
+You are given two captions describing the accent of a person speaking in the same audio clip:
+
+- **Generated accent:** ${generated}
+- **Reference accent:** ${reference}
+
+Question: Is the accent described in the Generated accent *strictly* consistent with the accent described in the Reference accent?  
+
+Only answer "yes" or "no". Do not provide any explanation.
+
+**Important:**  
+If the two accents differ in any aspect—including language variant, dialect, register (such as standard vs. regional dialect), or formality—answer "no".

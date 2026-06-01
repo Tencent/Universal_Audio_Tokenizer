@@ -1,0 +1,133 @@
+model_args:
+  max_target_positions: 2048
+  pooling_kernel_size: 2
+  pooling_type: "avg"
+  quantize_vocab_size: 8192
+  pooling_position: 0
+  quantize_position: 16
+  quantize_commit_coefficient: 0.25
+  quantize_loss_scale: 10.0
+  quantize_ema_decay: 0.95
+  quantize_restart_interval: 10
+  quantize_encoder_only: false
+  quantize_causal_encoder: false
+  quantize_causal_block_size: null
+  skip_language_detection: true
+  encoder_causal_attention: false
+  encoder_causal_convolution: false
+  encoder_residual_source_position: 3
+  encoder_residual_target_position: 32
+  use_residual_adapter: true
+  use_residual_gate: true
+  use_commit_loss: true
+
+training_args:
+  # Basic training configuration
+  base_seed: 1212
+  min_text_length: 2
+  use_codebook_monitor: true
+
+  use_ddp: true
+  is_debug_mode: false
+  scheduler_type: "cosine"
+  padding_strategy: "max_length"
+
+  num_train_epochs: 1000
+  num_train_steps: 2000000
+  batch_size: 8  # batch size per GPU
+  max_length: 2048
+  max_grad_norm: 1.0
+  freezed_encoder: false
+  freezed_decoder: false
+  decoder_cold_start: false
+
+  # Learning rate configuration
+  learning_rate: 2.0e-4   # LR for the whole model
+  min_lr: 2.0e-5
+  encoder_lr: 1.0e-5
+  encoder_min_lr: 1.0e-6
+  decoder_lr: 6.0e-4
+  decoder_min_lr: 6.0e-5
+  warmup_steps: 1000
+  
+  # Saving and evaluation configuration
+  save_strategy: "steps"          # Saving strategy
+  save_steps: 5000                # Save checkpoint every 5,000 steps
+  eval_strategy: "steps"          # Evaluation strategy
+  eval_steps: 5000                # Evaluate every 5,000 steps
+  eval_output_dir: "/path/to/save/eval_outputs" 
+  
+  # Logging configuration
+  logging_steps: 1                # Log every step
+  
+  # Other training configuration
+  model_base_name: "openai/whisper-large-v3"
+  model_output_dir: "/path/to/save/model_checkpoints"
+  cache_dir: "/path/to/cache_dir"
+
+wandb_args:
+  enable: last_pp_stage
+  key: <your_wandb_api_key_here>
+  host: https://wandb.ai
+  team: <your_wandb_team_name>
+  entity: <your_wandb_entity_name>
+  project: <your_wandb_project_name>
+  enable_param_hist: disabled
+  enable_grad_hist: disabled
+  enable_os_hist: disabled
+  enable_profile: last_pp_stage
+  group: Universal-Audio-Tokenizer
+  name: Universal-Audio-Tokenizer
+  dir: "/path/to/save/wandb_logs"
+
+data_args:
+  train_data_file:
+    librispeech:
+      path: "./data/sap/train.data.librispeech.list"
+      weight: 10
+    multilingual_librispeech:
+      path: "./data/sap/train.data.multilingual_librispeech.list"
+      weight: 1
+    gigaspeech:
+      path: "./data/sap/train.data.gigaspeech.list"
+      weight: 1
+    yodas:
+      path: "./data/sap/train.data.yodas.list"
+      weight: 1
+    hifi_tts:
+      path: "./data/sap/train.data.hifi_tts.list"
+      weight: 3
+    vctk_tts:
+      path: "./data/sap/train.data.vctk_tts.list"
+      weight: 3
+    libritts:
+      path: "./data/sap/train.data.libritts.list"
+      weight: 1
+    aishell:
+      path: "./data/sap/train.data.aishell_train.list"
+      weight: 10
+    wenetspeech:
+      path: "./data/sap/train.data.wenetspeech.list"
+      weight: 5
+    common_voice_en:
+      path: "./data/sap/train.data.common_voice_en.list"
+      weight: 1
+    common_voice_zh:
+      path: "./data/sap/train.data.common_voice_zh.list"
+      weight: 1
+    emilia_en:
+      path: "./data/sap/train.data.emilia_en.list"
+      weight: 1
+    emilia_zh:
+      path: "./data/sap/train.data.emilia_zh.list"
+      weight: 3
+    audioset:
+      path: "./data/sap/train.data.audioset.list"
+      weight: 3
+
+  test_data_files:
+    sap:
+      librispeech-clean: "./data/sap/test.data.librispeech-test-clean.list"
+      librispeech-other: "./data/sap/test.data.librispeech-test-other.list"
+      aishell: "./data/sap/test.data.aishell.list"
+      audioset: "./data/sap/test.data.audioset.list"

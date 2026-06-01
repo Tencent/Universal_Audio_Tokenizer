@@ -1,0 +1,46 @@
+You are given two JSON format audio descriptions about the same audio clip:
+
+- **Reference Description:** The ground-truth expert annotation detailing the audio in structured JSON fields.
+- **Generated Description:** The generated structured JSON describing the audio produced by a model.
+
+Each description may include fields such as:
+- **transcription:** The spoken words in the audio, transcribed verbatim.
+- **paralinguistics:** Non-verbal vocal features (e.g., the speaker's age and gender, emotion, accent, prosody, and timbre).
+- **nonLinguisticEvents:** Sounds other than speech (e.g., music, environmental sounds, animals, objects, human non-verbal noises), including an overall description, a discrete events list and a continuous events list.
+
+**Your task:** Judge how well the Generated Description matches the Reference Description, considering accuracy and completeness for each relevant field. Focus on consistency in:
+- Transcription accuracy and content.
+- Paralinguistic details.
+- Non-linguistic event description.
+- Environmental/contextual information.
+- Audio and emotional characterization.
+
+---
+
+**Scoring Criteria:**  
+Assign a score from **1** to **5** based on these standards:
+
+- **5 — Perfect Consistency:**  
+  The Generated Description accurately reflects almost all key information from the Reference Description across fields, with only negligible differences.
+
+- **4 — Mostly Consistent:**  
+  Most major elements in all important fields match closely; only minor details or less important aspects may be missing or rephrased.
+
+- **3 — Partially Consistent:**  
+  Some main aspects are captured, but important fields are omitted or include significant errors; noticeable inconsistency.
+
+- **2 — Mostly Inconsistent:**  
+  Very few correct features across main fields; most elements are missing, inaccurate, or contradicted.
+
+- **1 — Completely Inconsistent:**  
+  Content fundamentally does not match; major fields differ or are misrepresented.
+
+---
+
+Below are the Generated Description and the Reference Description in JSON format:
+
+### [Generated Description]: ${generated}
+
+### [Reference Description]: ${reference}
+
+After evaluating, please output the score only without anything else. You don’t need to provide any explanations.

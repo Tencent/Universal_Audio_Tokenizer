@@ -1,0 +1,42 @@
+You are given two descriptions about the same audio clip:
+
+- **Reference Description:** The ground-truth expert annotation describing the audio in detail.
+- **Generated Description:** The generated description produced by a model.
+
+Your task is to judge how well the Generated Description matches the Reference Description in its description of the audio clip.  
+**Audio can be any type**—music, singing, speech, spoken dialogue, environmental sounds, animal noises, or other non-musical audio.
+
+**Please consider these aspects as relevant (if present):**
+- **Sound events & sources:** Describe what sounds are present (e.g. music, speech, environmental sounds, specific objects, animals, vehicles, etc.)
+- **Environmental context:** Indoors/outdoors, location hints, crowd noise, weather, reverberation, etc.  
+- **Audio characteristics:** Quality, fidelity, mix, spatial placement, background/foreground, clarity or distortion  
+
+---
+
+**Scoring Criteria:**  
+Assign a score from **1** to **5** based on these standards:
+
+- **5 — Perfect Consistency:**  
+  The Generated Description accurately covers almost all important information given in the Reference Description, including types of sound, main events, vocal or non-vocal details, environmental context, and tone. Any differences are minor and inconsequential.
+
+- **4 — Mostly Consistent:**  
+  The Generated Description includes most major elements from the Reference Description. Some small details or less important aspects may be missing or stated differently, but all principal information matches closely. Only minor mistakes or omissions are present.
+
+- **3 — Partially Consistent:**  
+  The Generated Description captures some main aspects correctly, but omits important details or contains noticeable errors regarding sound types, vocal or environmental features, or context. There is reasonable overlap, but inconsistency in parts.
+
+- **2 — Mostly Inconsistent:**  
+  The Generated Description reflects very few features from the Reference Description. Most elements are missing, inaccurate, or contradicted (e.g., confuses speech for music; wrong language; misses major sound sources; incorrect context). There is substantial disagreement.
+
+- **1 — Completely Inconsistent:**  
+  The Generated Description does not match the Reference Description in content or meaning. Major sound events/types, vocal or environmental information, and context differ fundamentally.
+
+---
+
+Below are the Generated Description and the Reference Description:
+
+### [Generated Description]: ${generated}
+
+### [Reference Description]: ${reference}
+
+After evaluating, please output the score only without anything else. You don’t need to provide any explanations.

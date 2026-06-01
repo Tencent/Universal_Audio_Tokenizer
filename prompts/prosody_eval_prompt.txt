@@ -1,0 +1,8 @@
+You are given two captions describing the prosody of a person speaking in the same audio clip:
+
+- **Generated prosody:** ${generated}
+- **Reference prosody:** ${reference}
+
+Question: Is the prosody described in Generated prosody consistent with the prosody described in Reference prosody?  
+
+Please answer only "yes" or "no". Do not provide any explanation.

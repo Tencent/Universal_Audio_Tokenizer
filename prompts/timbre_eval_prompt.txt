@@ -1,0 +1,8 @@
+You are given two captions describing the timbre of a person speaking in the same audio clip:
+
+- **Generated timbre:** ${generated}
+- **Reference timbre:** ${reference}
+
+Question: Is the timbre described in Generated timbre consistent with the timbre described in Reference timbre?  
+
+Please answer only "yes" or "no". Do not provide any explanation.

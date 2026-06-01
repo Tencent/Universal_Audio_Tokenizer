@@ -1,0 +1,138 @@
+Given a detailed description of an audio sample, output a JSON object containing the following audio features:
+
+- **transcription**: If human speech is present, provide an accurate transcription of the spoken content in the original language. If there is no human voice, set this field to null.
+- **paralinguistics**: If human voice is present, provide the following fields:  
+  - `age`: One of `Child`, `Adult`, or `Elderly`.
+  - `gender`: Specify as `Male` or `Female`.
+  - `emotion`: This field MUST use ONE of the following seven specific categories: `Anger`, `Disgust`, `Sadness`, `Happiness`, `Neutral`, `Surprise`, `Fear`. Only these values are allowed.
+  - `accent`: Describe the accent or variety of language used (e.g., `Standard Mandarin Chinese`, `American English`, etc.).
+  - `prosody`: Summarize prosodic features, which refer to the patterns of rhythm, pitch, pace, emphasis, and intonation in speech (i.e., how something is said).
+  - `timbre`: Briefly describe the timbre of the voice. **Timbre** refers to the unique tonal quality or color of a sound that distinguishes one voice or instrument from another, independent of pitch and loudness. For example, descriptors may include "nasal," "breathy," "warm," "bright," "harsh," or "gentle."
+
+  **Note:** Timbre is *not* the same as prosody; prosody relates to temporal and pitch-based features, while timbre describes the characteristic sound qualities.
+
+  If there is no human voice, set all fields in the `paralinguistics` object to null.
+- **nonLinguisticEvents**:
+  - `description`: A summary sentence describing general non-speech audio characteristics or context.
+  - `discreteEvents`: A list of discrete (one-shot or instantaneous) non-linguistic events (such as a car horn, a door slam). Each item must contain a unique `label` and a brief `characteristic` describing its intensity, duration, or other relevant attribute. (e.g., `label`: `"Car horn"`, `characteristic`: `"Short, loud"`). Event labels must not repeat.
+  - `continuousEvents`: A list of continuous or background non-linguistic events (such as engine noise, wind, music), again with a unique `label` and a brief `characteristic` descriptor.
+
+Always follow these rules:
+- If the audio contains **no human voice**, set `transcription` and all fields inside `paralinguistics` to null.
+- For `emotion`, ONLY USE ONE OF THESE: `Anger`, `Disgust`, `Sadness`, `Happiness`, `Neutral`, `Surprise`, `Fear`.
+- Ensure that all event `labels` are unique and clearly indicate what type of sound or event they refer to.
+
+Respond ONLY with a JSON object as output (do not include any preamble, explanation, or extra formatting), with all required fields. Use the formats and categories exactly as described above.
+
+Here are some examples of correct input/output formatting:
+
+---
+
+**Example 1:**
+
+Input:
+```
+The audio clip begins with a single, clear female voice speaking in standard Mandarin Chinese, recorded in a controlled, acoustically treated environment. The speaker’s tone is calm, measured, and narrative, with a gentle, slightly high pitch and a subtle, breathy quality. She delivers the line: “在北宋的时候，有一个州的太守叫田登。” (“In the Northern Song dynasty, there was a prefect of a state named Tian Deng.”) Her speech is precise and formal, with each word articulated clearly and evenly paced, and a slight rise in pitch at the end of the sentence, suggesting a storytelling or educational intent. The recording is of high fidelity, with no background noise, music, or environmental sounds, and the voice is centered in the stereo field, indicating close microphone placement and professional production. The clip ends abruptly, with no fade-out or trailing sound, implying it is an excerpt from a longer narrative.
+
+This audio excerpt is a professionally produced Mandarin narration, likely from an educational or historical storytelling context, introducing the figure of Tian Deng, a prefect during the Northern Song dynasty. The speaker’s formal, neutral delivery and the absence of extraneous sounds suggest the clip is intended for a general audience, possibly as part of a documentary, audiobook, or educational program. The content and style indicate a focus on historical storytelling, with the speaker serving as a knowledgeable narrator presenting a brief, factual introduction to a historical character.
+```
+
+Output:
+```json
+{
+  "transcription": "在北宋的时候，有一个州的太守叫田登。",
+  "paralinguistics": {
+    "age": "Adult",
+    "gender": "Female",
+    "emotion": "Neutral",
+    "accent": "Standard Mandarin Chinese",
+    "prosody": "Each word is articulated clearly and at an even pace, with a slight rise in pitch at the end of the sentence.",
+    "timbre": "Gentle"
+  },
+  "nonLinguisticEvents": {
+    "description": "The recording is of high fidelity, with no background noise, music, or environmental sounds, and the voice is centered in the stereo field, indicating close microphone placement and professional production.",
+    "discreteEvents": [],
+    "continuousEvents": []
+  }
+}
+```
+
+---
+
+**Example 2:**
+
+Input:
+```
+The audio clip begins with a sharp, high-pitched car horn blast, lasting about half a second, which is immediately followed by a brief, low-frequency thump—likely the sound of a hand or object contacting the vehicle’s body. A second, slightly longer horn blast follows, with a similar timbre and pitch, and is succeeded by a third, even briefer horn blast. These initial horn sounds are clear, direct, and close to the microphone, indicating the recording device is positioned inside the vehicle. The horn’s tone is synthetic and electronic, typical of modern cars, and the blasts are spaced irregularly, suggesting a deliberate, non-rhythmic pattern.
+
+After the third horn, a short pause occurs, during which a faint, low-frequency rumble becomes audible, likely the sound of the car’s engine idling. This rumble is accompanied by a subtle, high-frequency hiss, which is the noise floor of the recording device. The acoustic environment is dry, with no reverberation or echo, indicating the recording takes place inside a stationary vehicle with the windows closed.
+
+The fourth horn blast is longer and more sustained, lasting about a second, and is immediately followed by a rapid sequence of three short, staccato horn blasts. This sequence is louder and more forceful than the previous blasts, with a slightly distorted, clipped quality due to the recording device’s limitations. The horn’s timbre remains consistent, and the pattern of the final sequence is distinct from the earlier, more spaced-out blasts.
+
+Following the final horn sequence, the engine rumble continues, and the recording ends abruptly, with no fade-out or lingering sound. Throughout the clip, there are no voices, music, or other environmental noises; the only sounds are the horn blasts, the engine rumble, and the background hiss.
+
+In summary, the audio captures a sequence of five car horn blasts—three spaced apart, one sustained, and one rapid triple—inside a stationary vehicle with the windows closed. The horn sounds are synthetic and electronic, and the recording is marked by a low-level hiss and a brief thump at the start. The absence of speech, music, or external sounds, along with the dry acoustic environment, suggests the recording was made in a private, controlled setting, likely for demonstration or documentation purposes.
+```
+
+Output:
+```json
+{
+  "transcription": null,
+  "paralinguistics": {
+    "age": null,
+    "gender": null,
+    "emotion": null,
+    "accent": null,
+    "prosody": null,
+    "timbre": null
+  },
+  "nonLinguisticEvents": {
+    "description": "The audio captures a sequence of five car horn blasts—three spaced apart, one sustained, and one rapid triple—inside a stationary vehicle with the windows closed. The horn sounds are synthetic and electronic, and the recording is marked by a low-level hiss and a brief thump at the start. The absence of speech, music, or external sounds, along with the dry acoustic environment, suggests the recording was made in a private, controlled setting, likely for demonstration or documentation purposes.",
+    "discreteEvents": [
+      {
+        "label": "Initial car horn blast",
+        "characteristic": "Sharp"
+      },
+      {
+        "label": "Thump on vehicle body",
+        "characteristic": "Brief"
+      },
+      {
+        "label": "Second car horn blast",
+        "characteristic": "Slightly longer"
+      },
+      {
+        "label": "Third car horn blast",
+        "characteristic": "Very brief"
+      },
+      {
+        "label": "Sustained car horn blast",
+        "characteristic": "Long"
+      },
+      {
+        "label": "Rapid car horn blast sequence",
+        "characteristic": "Loud and distorted"
+      }
+    ],
+    "continuousEvents": [
+      {
+        "label": "Engine rumble",
+        "characteristic": "Low-frequency"
+      },
+      {
+        "label": "Recording hiss",
+        "characteristic": "Faint"
+      }
+    ]
+  }
+}
+```
+
+---
+
+Use the above format exactly when responding to new audio descriptions, and generate your JSON output.
+
+Input:
+```
+${Input}
+```
